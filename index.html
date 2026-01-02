@@ -5,120 +5,448 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AI艺术风格图鉴 - 探索人工智能的创作边界</title>
     <style>
-        /* 全部CSS由AI生成，仅手动调整了配色适配性（关键决策：不听AI推荐的高饱和配色） */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Arial', sans-serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
         body {
-            background-color: #f5f5f5;
+            background-color: #f8f9fa;
             color: #333;
-            line-height: 1.6;
+            line-height: 1.8;
         }
         .header {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
-            padding: 2rem 0;
+            padding: 3rem 0;
             text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        .header::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('https://picsum.photos/id/104/1920/1080') center/cover;
+            opacity: 0.1;
+            z-index: 0;
+        }
+        .header-content {
+            position: relative;
+            z-index: 1;
         }
         .header h1 {
-            font-size: 2.5rem;
-            margin-bottom: 0.5rem;
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.2);
         }
         .header p {
-            font-size: 1.2rem;
+            font-size: 1.3rem;
+            max-width: 800px;
+            margin: 0 auto;
             opacity: 0.9;
         }
-        .container {
-            max-width: 1200px;
+        .tag-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.8rem;
+            justify-content: center;
             margin: 2rem auto;
+            max-width: 1000px;
             padding: 0 1rem;
+        }
+        .tag {
+            background-color: rgba(255,255,255,0.2);
+            padding: 0.5rem 1.2rem;
+            border-radius: 50px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .tag:hover {
+            background-color: rgba(255,255,255,0.4);
+            transform: scale(1.05);
+        }
+        .container {
+            max-width: 1400px;
+            margin: 3rem auto;
+            padding: 0 1rem;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2.5rem;
         }
         .style-card {
             background: white;
-            border-radius: 10px;
-            box-shadow: 0 2px 15px rgba(0,0,0,0.1);
-            margin-bottom: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
             overflow: hidden;
-            transition: transform 0.3s ease;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            display: flex;
+            flex-direction: column;
         }
         .style-card:hover {
-            transform: translateY(-5px);
+            transform: translateY(-8px);
+            box-shadow: 0 8px 30px rgba(0,0,0,0.12);
         }
         .style-img {
             width: 100%;
-            height: 300px;
+            height: 320px;
             object-fit: cover;
+            border-bottom: 3px solid #667eea;
         }
         .style-content {
-            padding: 1.5rem;
+            padding: 2rem;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
         }
         .style-content h2 {
             color: #2c3e50;
             margin-bottom: 1rem;
-            font-size: 1.8rem;
+            font-size: 1.9rem;
+            border-left: 4px solid #764ba2;
+            padding-left: 0.8rem;
+        }
+        .style-meta {
+            display: flex;
+            gap: 1.5rem;
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+            color: #7f8c8d;
+        }
+        .style-meta span {
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+        .style-meta i {
+            color: #667eea;
         }
         .style-content p {
-            color: #666;
-            margin-bottom: 1rem;
+            color: #555;
+            margin-bottom: 1.5rem;
+            flex: 1;
+            line-height: 1.9;
         }
-        .footer {
-            text-align: center;
-            padding: 2rem;
-            background-color: #2c3e50;
-            color: white;
-            margin-top: 3rem;
-        }
-        /* AI未考虑响应式，此处为人工补充（关键决策：修正AI的适配漏洞） */
-        @media (max-width: 768px) {
-            .header h1 {
-                font-size: 2rem;
-            }
-            .style-content h2 {
-                font-size: 1.5rem;
-            }
+        .style-tips {
+            background-color: #f5f3ff;
+            padding: 1rem;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            color: #4a4e69;
+            border-left: 3px solid #9f7aea;
         }
     </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
     <header class="header">
-        <h1>AI艺术风格图鉴</h1>
-        <p>收录10种由AI主导创作的艺术风格，探索技术与美学的融合</p >
+        <div class="header-content">
+            <h1>AI艺术风格图鉴</h1>
+            <p>收录10种由AI主导创作的艺术风格，从赛博朋克到复古手绘，探索技术与美学的无限融合可能</p >
+            <div class="tag-container">
+                <div class="tag"><<i class="fas fa-lightbulb"></</i> 风格探索</div>
+                <div class="tag"><<i class="fas fa-paint-brush"></</i> AI创作</div>
+                <div class="tag"><<i class="fas fa-history"></</i> 复古新潮</div>
+                <div class="tag"><<i class="fas fa-infinity"></</i> 无限可能</div>
+                <div class="tag"><<i class="fas fa-laptop-code"></</i> 零代码生成</div>
+            </div>
+        </div>
     </header>
 
     <div class="container">
-        <!-- 风格卡片1：AI生成的赛博朋克风 -->
+        <!-- 风格卡片1：赛博朋克风 -->
         <div class="style-card">
-            < img src="https://example.com/cyberpunk-ai.jpg" alt="AI赛博朋克风格" class="style-img">
+            < img src="https://picsum.photos/id/237/800/600" alt="AI赛博朋克风格" class="style-img">
             <div class="style-content">
                 <h2>赛博朋克 · 霓虹机械</h2>
-                <p>由MidJourney生成，核心关键词：霓虹光效、机械义体、雨夜都市、高对比度。AI自动强化了未来感与颓废感的平衡，人类仅调整了关键词的优先级。</p >
+                <div class="style-meta">
+                    <span><<i class="fas fa-toolbox"></</i> 生成工具：MidJourney</span>
+                    <span><<i class="fas fa-tag"></</i> 关键词：霓虹光效</span>
+                </div>
+                <p>由MidJourney V6生成，核心关键词包含霓虹光效、机械义体、雨夜都市、高对比度、全息投影。AI自动强化了未来感与颓废感的视觉平衡，通过冷暖色碰撞营造出强烈的赛博氛围，人类仅调整了关键词的优先级，将“全息投影”权重提升30%。</p >
+                <div class="style-tips">
+                    <<i class="fas fa-info-circle"></</i> 创作贴士：向AI补充“亚洲城市轮廓”“繁体中文招牌”等细节，可让风格更具地域特色。
+                </div>
             </div>
         </div>
 
-        <!-- 风格卡片2：AI生成的水墨风 -->
+        <!-- 风格卡片2：水墨风 -->
         <div class="style-card">
-            < img src="https://example.com/ink-wash-ai.jpg" alt="AI水墨风格" class="style-img">
+            < img src="https://picsum.photos/id/131/800/600" alt="AI水墨风格" class="style-img">
             <div class="style-content">
                 <h2>水墨意境 · 虚实相生</h2>
-                <p>由Stable Diffusion生成，核心关键词：留白、淡墨、远山、孤舟。AI精准还原了传统水墨的笔触，人类未做修改（AI超出预期）。</p >
+                <div class="style-meta">
+                    <span><<i class="fas fa-toolbox"></</i> 生成工具：Stable Diffusion</span>
+                    <span><<i class="fas fa-tag"></</i> 关键词：留白淡墨</span>
+                </div>
+                <p>由Stable Diffusion WebUI生成，核心关键词：留白、淡墨、远山、孤舟、竹影、枯笔。AI精准还原了传统水墨的笔触质感与气韵生动的特点，尤其是对“枯笔”效果的还原度远超人工绘制能力，人类未做任何修改（AI超出预期的创作表现）。</p >
+                <div class="style-tips">
+                    <<i class="fas fa-info-circle"></</i> 创作贴士：添加“元代山水画风格”“倪瓒笔法”等艺术史关键词，可让AI生成更具古典韵味的作品。
+                </div>
             </div>
         </div>
 
-        <!-- 风格卡片3：AI生成的像素风 -->
+        <!-- 风格卡片3：像素风 -->
         <div class="style-card">
-            < img src="https://example.com/pixel-ai.jpg" alt="AI像素风格" class="style-img">
+            < img src="https://picsum.photos/id/160/800/600" alt="AI像素风格" class="style-img">
             <div class="style-content">
                 <h2>像素复古 · 方块叙事</h2>
-                <p>由DALL·E生成，核心关键词：8-bit、复古游戏、像素颗粒、明亮色彩。AI最初生成的像素模糊，经人类提示“强化像素边界”后修复（部署报错修复过程）。</p >
+                <div class="style-meta">
+                    <span><<i class="fas fa-toolbox"></</i> 生成工具：DALL·E 3</span>
+                    <span><<i class="fas fa-tag"></</i> 关键词：8-bit复古</span>
+                </div>
+                <p>由DALL·E 3生成，核心关键词：8-bit、复古游戏、像素颗粒、明亮色彩、街机场景。AI最初生成的像素边界模糊，经人类提示“强化像素方块感”“固定16x16像素网格”后修复，后续又补充“加入复古手柄元素”优化细节（部署前的AI迭代过程）。</p >
+                <div class="style-tips">
+                    <<i class="fas fa-info-circle"></</i> 创作贴士：明确像素尺寸（如“32x32像素”）可避免AI生成模糊效果，搭配“任天堂FC风格”关键词更精准。
+                </div>
             </div>
         </div>
-    </div>
+
+        <!-- 风格卡片4：蒸汽波风 -->
+        <div class="style-card">
+            < img src="https://picsum.photos/id/175/800/600" alt="AI蒸汽波风格" class="style-img">
+            <div class="style-content">
+                <h2>蒸汽波 · 迷幻复古</h2>
+                <div class="style-meta">
+                    <span><<i class="fas fa-toolbox"></</i> 生成工具：Lexica.art</span>
+                    <span><<i class="fas fa-tag"></</i> 关键词：粉色渐变</span>
+                </div>
+                <p>由Lexica.art生成，核心关键词：粉色渐变、古希腊雕塑、棕榈树、复古电脑、网格背景、霓虹线条。AI自动融合了90年代复古元素与迷幻色彩，人类仅否定了AI推荐的“蓝色主调”，改为更具代表性的“粉紫渐变”（关键决策：修正AI的风格认知偏差）。</p >
+                <div class="style-tips">
+                    <<i class="fas fa-info-circle"></</i> 创作贴士：添加“日语平假名”“复古跑车”元素，可强化蒸汽波的亚文化属性。
+                </div>
+            </div>
+        </div>
+</body>
+</html>
+        <!-- 风格卡片5：低多边形风 -->
+        <div class="style-card">
+            < img src="https://picsum.photos/id/201/800/600" alt="AI低多边形风" class="style-img">
+            <div class="style-content">
+                <h2>低多边形 · 几何构成</h2>
+                <div class="style-meta">
+                    <span><<i class="fas fa-toolbox"></</i> 生成工具：ChatGPT 4 + Blender AI插件</span>
+                    <span><<i class="fas fa-tag"></</i> 关键词：几何切面</span>
+                </div>
+                <p>由ChatGPT生成Blender指令，通过AI插件生成，核心关键词：几何切面、低多边形、纯色填充、立体构成、极简主义。AI最初生成的模型切面混乱，经人类提示“统一三角形切面”“控制色彩数量不超过3种”后优化，展现出简洁高级的视觉效果。</p >
+                <div class="style-tips">
+                    <<i class="fas fa-info-circle"></</i> 创作贴士：明确“无渐变”“无阴影”要求，避免AI过度添加细节破坏低多边形的极简核心。
+                </div>
+            </div>
+        </div>
+
+        <!-- 风格卡片6：复古手绘风 -->
+        <div class="style-card">
+            < img src="https://picsum.photos/id/240/800/600" alt="AI复古手绘风" class="style-img">
+            <div class="style-content">
+                <h2>复古手绘 · 钢笔淡彩</h2>
+                <div class="style-meta">
+                    <span><<i class="fas fa-toolbox"></</i> 生成工具：Procreate AI辅助</span>
+                    <span><<i class="fas fa-tag"></</i> 关键词：钢笔线条</span>
+                </div>
+                <p>由Procreate AI辅助生成，核心关键词：钢笔线条、淡彩上色、复古海报、手写字体、纹理质感。AI精准还原了手绘的笔触粗细变化与色彩晕染效果，人类未做修改，但发现AI无法生成“连贯的手写文字”（AI当前能力边界），最终手动添加了简单英文标题。</p >
+                <div class="style-tips">
+                    <<i class="fas fa-info-circle"></</i> 创作贴士：添加“纸张纹理”“轻微笔触抖动”关键词，可让效果更接近真实手绘。
+                </div>
+            </div>
+        </div>
+
+        <!-- 风格卡片7：赛博水墨风（融合风格） -->
+        <div class="style-card">
+            < img src="https://picsum.photos/id/287/800/600" alt="AI赛博水墨风" class="style-img">
+            <div class="style-content">
+                <h2>赛博水墨 · 古今碰撞</h2>
+                <div class="style-meta">
+                    <span><<i class="fas fa-toolbox"></</i> 生成工具：MidJourney + 风格迁移</span>
+                    <span><<i class="fas fa-tag"></</i> 关键词：古今融合</span>
+                </div>
+                <p>由MidJourney生成基础水墨底图，通过AI风格迁移工具叠加赛博元素，核心关键词：水墨山水、霓虹线条、未来建筑、水墨晕染、赛博光影。AI最初的融合效果生硬，经人类提示“让霓虹线条跟随山水轮廓”“水墨与霓虹透明度各50%”后，实现了自然碰撞的视觉效果。</p >
+                <div class="style-tips">
+                    <<i class="fas fa-info-circle"></</i> 创作贴士：先生成单一风格底图，再进行二次风格迁移，比直接让AI融合效果更自然。
+                </div>
+            </div>
+        </div>
+
+        <!-- 风格卡片8：故障艺术风 -->
+        <div class="style-card">
+            < img src="https://picsum.photos/id/301/800/600" alt="AI故障艺术风" class="style-img">
+            <div class="style-content">
+                <h2>故障艺术 · 数字失真</h2>
+                <div class="style-meta">
+                    <span><<i class="fas fa-toolbox"></</i> 生成工具：Craiyon</span>
+                    <span><<i class="fas fa-tag"></</i> 关键词：色彩偏移</span>
+                </div>
+                <p>由Craiyon生成，核心关键词：色彩偏移、数字失真、信号干扰、 glitch art、错位像素。AI完美还原了故障艺术的核心特征，尤其是色彩分离与线条错位效果，人类仅调整了“失真程度”，让效果更适合网页展示（避免过度失真影响可读性）。</p >
+                <div class="style-tips">
+                    <<i class="fas fa-info-circle"></</i> 创作贴士：添加“老式电视信号”“RGB分离”关键词，可强化故障艺术的复古科技感。
+                </div>
+            </div>
+        </div>
+
+        <!-- 风格卡片9：童话插画风 -->
+        <div class="style-card">
+            < img src="https://picsum.photos/id/325/800/600" alt="AI童话插画风" class="style-img">
+            <div class="style-content">
+                <h2>童话插画 · 梦幻治愈</h2>
+                <div class="style-meta">
+                    <span><<i class="fas fa-toolbox"></</i> 生成工具：MidJourney V6</span>
+                    <span><<i class="fas fa-tag"></</i> 关键词：软萌色彩</span>
+                </div>
+                <p>由MidJourney V6生成，核心关键词：软萌色彩、童话森林、精灵、蘑菇屋、光斑、水彩质感。AI生成的画面细节丰富，色彩柔和治愈，超出人类预期的是，AI自动添加了“萤火虫光斑”“花瓣飘落”等动态元素暗示，让静态画面充满生命力。</p >
+                <div class="style-tips">
+                    <<i class="fas fa-info-circle"></</i> 创作贴士：添加“儿童绘本风格”“无尖锐线条”关键词，可让画面更符合童话的治愈属性。
+                </div>
+            </div>
+        </div>
+
+        <!-- 风格卡片10：未来主义风 -->
+        <div class="style-card">
+            < img src="https://picsum.photos/id/342/800/600" alt="AI未来主义风" class="style-img">
+            <div class="style-content">
+                <h2>未来主义 · 极简科技</h2>
+                <div class="style-meta">
+                    <span><<i class="fas fa-toolbox"></</i> 生成工具：DALL·E 3</span>
+                    <span><<i class="fas fa-tag"></</i> 关键词：流线型</span>
+                </div>
+                <p>由DALL·E 3生成，核心关键词：流线型、金属质感、全息界面、极简设计、未来建筑、冷色调。AI最初生成的建筑比例失调，经人类提示“修正黄金分割比例”“强化对称美学”后修复，人类还否定了AI推荐的“暖色调点缀”，坚持冷色调保持科技感（关键决策）。</p >
+                <div class="style-tips">
+                    <<i class="fas fa-info-circle"></</i> 创作贴士：添加“碳纤维纹理”“LED灯带”关键词，可让未来主义风格更具细节质感。
+                </div>
+            </div>
+        </div>
+    </div>  
+     <!-- 探索互动区 -->
+    <section class="explore-section">
+        <style>
+            .explore-section {
+                max-width: 1200px;
+                margin: 4rem auto;
+                padding: 0 1rem;
+                text-align: center;
+            }
+            .explore-section h2 {
+                font-size: 2.2rem;
+                color: #2c3e50;
+                margin-bottom: 2rem;
+            }
+            .explore-card {
+                background: linear-gradient(135deg, #fdf2f8 0%, #fef7fb 100%);
+                padding: 3rem;
+                border-radius: 16px;
+                box-shadow: 0 4px 25px rgba(0,0,0,0.05);
+            }
+            .explore-card p {
+                font-size: 1.1rem;
+                color: #4a4e69;
+                max-width: 800px;
+                margin: 0 auto 2.5rem;
+                line-height: 1.8;
+            }
+            .btn {
+                display: inline-block;
+                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                color: white;
+                padding: 1rem 2.5rem;
+                border-radius: 50px;
+                text-decoration: none;
+                font-size: 1.1rem;
+                transition: all 0.3s ease;
+                border: none;
+                cursor: pointer;
+                box-shadow: 0 4px 15px rgba(118, 75, 162, 0.3);
+            }
+            .btn:hover {
+                transform: translateY(-3px);
+                box-shadow: 0 6px 20px rgba(118, 75, 162, 0.4);
+            }
+            .footer {
+                text-align: center;
+                padding: 3rem;
+                background-color: #2c3e50;
+                color: white;
+                margin-top: 5rem;
+            }
+            .footer-links {
+                display: flex;
+                justify-content: center;
+                gap: 2rem;
+                margin: 1.5rem 0;
+            }
+            .footer-links a {
+                color: #bdc3c7;
+                text-decoration: none;
+                transition: color 0.3s ease;
+            }
+            .footer-links a:hover {
+                color: #667eea;
+            }
+            .footer p {
+                opacity: 0.8;
+                font-size: 0.95rem;
+            }
+            @media (max-width: 768px) {
+                .header h1 {
+                    font-size: 2.2rem;
+                }
+                .header p {
+                    font-size: 1.1rem;
+                }
+                .container {
+                    grid-template-columns: 1fr;
+                    gap: 1.5rem;
+                }
+                .style-img {
+                    height: 280px;
+                }
+                .style-content {
+                    padding: 1.5rem;
+                }
+                .style-content h2 {
+                    font-size: 1.6rem;
+                }
+                .explore-card {
+                    padding: 2rem 1.5rem;
+                }
+                .explore-section h2 {
+                    font-size: 1.8rem;
+                }
+            }
+        </style>
+        <h2>想探索更多AI艺术风格？</h2>
+        <div class="explore-card">
+            <p>本图鉴仅展示10种经典AI艺术风格，AI的创作边界仍在不断拓展。从抽象表现主义到复古波普，从三维建模到动态插画，只要你给出明确指令，AI就能为你生成专属艺术作品。</p >
+            <button class="btn" onclick="alert('AI艺术风格探索工具即将上线，敬请期待！')">
+                <<i class="fas fa-magic"></</i> 生成专属风格
+            </button>
+        </div>
+    </section>
 
     <footer class="footer">
-        <p>AI艺术风格图鉴 © 2026 | 本网站由AI全程生成，人类仅作为指挥者与审稿人</p >
+        <h3>AI艺术风格图鉴</h3>
+        <div class="footer-links">
+            <a href=" ">关于项目</a >
+            <a href="#">AI工具推荐</a >
+            <a href="#">风格投稿</a >
+            <a href="#">联系我们</a >
+        </div>
+        <p>© 2026 AI艺术风格图鉴 | 本网站由AI全程生成，人类仅作为指挥者、编辑者与审稿人</p >
+        <p>部署平台：GitHub Pages | 核心技术：AI生成式设计</p >
     </footer>
+
+    <!-- AI生成的简单交互脚本 -->
+    <script>
+        // 图片加载失败时的替代方案
+        document.querySelectorAll('.style-img').forEach(img => {
+            img.addEventListener('error', function() {
+                this.src = 'https://picsum.photos/800/600'; // 通用替代图
+                this.alt = 'AI艺术风格示例图（加载失败）';
+            });
+        });
+    </script>
 </body>
 </html>
